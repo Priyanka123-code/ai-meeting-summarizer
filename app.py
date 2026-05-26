@@ -20,8 +20,6 @@ from utils.transcription import (
 )
 from utils.tts import speak_text
 # from unsloth import FastLanguageModel
-import whisper
-from pyannote.audio import Pipeline
 
 load_dotenv()
 
