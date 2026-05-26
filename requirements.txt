@@ -3,6 +3,7 @@ openai-whisper
 torch
 langchain-groq
 pydub
+audioop-lts
 python-docx
 python-dotenv
 protobuf==3.20.3
