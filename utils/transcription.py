@@ -9,6 +9,8 @@ from datetime import datetime
 from importlib.util import find_spec
 import torch
 
+DEFAULT_WHISPER_MODEL = os.getenv("WHISPER_MODEL_SIZE", "base")
+
 # ====================== PHASE 3: TIMESTAMP HELPER ======================
 def format_timestamp(seconds: float) -> str:
     """Converts seconds into professional [MM:SS] format for the UI"""
@@ -97,8 +99,9 @@ def is_vosk_available() -> bool:
     return find_spec("vosk") is not None
 
 # ====================== WHISPER CORE LOGIC ======================
-def transcribe_with_whisper(audio_path: str, model_size="medium") -> dict:
+def transcribe_with_whisper(audio_path: str, model_size=None) -> dict:
     """Returns both full text and segments for diarization"""
+    model_size = model_size or DEFAULT_WHISPER_MODEL
     model = load_whisper_model(model_size)
     result = model.transcribe(audio_path, language="en")
     return result
@@ -122,9 +125,9 @@ def transcribe_audio(uploaded_file, use_vosk=False) -> str:
         if use_vosk and is_vosk_available():
             transcript = transcribe_with_vosk(wav_path)
         else:
-            result = transcribe_with_whisper(wav_path, model_size="medium")
+            result = transcribe_with_whisper(wav_path)
             transcript = result["text"].strip()
-    except RuntimeError as exc:
+    except Exception as exc:
         transcript = f"Error: {exc}"
     finally:
         if os.path.exists(audio_path): os.remove(audio_path)

@@ -582,7 +582,7 @@ with tab_capture:
             if enable_diarization and hf_token:
                 temp_path = save_uploaded_file(uploaded_file, prefix="diarize")
                 try:
-                    model_whisper = load_whisper_model("medium")
+                    model_whisper = load_whisper_model()
                     result = model_whisper.transcribe(temp_path)
                     try:
                         transcript = get_diarized_transcript(temp_path, result["segments"], hf_token)
