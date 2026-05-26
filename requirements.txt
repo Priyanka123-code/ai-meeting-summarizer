@@ -1,0 +1,20 @@
+streamlit
+whisper
+pydub
+moviepy
+python-docx
+pandas
+python-dotenv
+langchain-groq
+langchain-chroma
+langchain-huggingface
+kokoro
+soundfile
+sentence-transformers
+chromadb
+streamlit-mic-recorder   # For real-time voice input
+pyannote.audio
+torch
+torchvision
+torchaudio
+unsloth

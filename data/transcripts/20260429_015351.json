@@ -1,0 +1,21 @@
+{
+  "meeting_id": "20260429_015351",
+  "filename": "test.m4a",
+  "date": "2026-04-29 01:56",
+  "transcript": "Hi, I'm Priyanka. This is a test of the AI meeting assistant. We are working on the project called Founder, which is typically a social media pitching platform and the deadline for the project is tomorrow 10 a.m.",
+  "analysis": {
+    "summary": "Project Founder meeting",
+    "key_decisions": [
+      "Project Founder deadline is tomorrow 10 a.m."
+    ],
+    "open_questions": [],
+    "action_items": [
+      {
+        "task": "Complete Project Founder",
+        "owner": "Priyanka",
+        "deadline": "tomorrow 10 a.m.",
+        "priority": "High"
+      }
+    ]
+  }
+}

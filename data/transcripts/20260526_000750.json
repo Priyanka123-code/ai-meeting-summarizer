@@ -1,0 +1,37 @@
+{
+  "meeting_id": "20260526_000750",
+  "filename": "sin_test.mp4",
+  "date": "2026-05-26 00:07",
+  "transcript": "oh everyone thank you guys for coming to our weekly student success meeting and let's just get started so i have our list of chronically absence students here and i've been noticing a troubling trend i'm a lot of students are skipping on fridays does anyone have any idea what's going on i've heard some of my meant he is talking about how it's really hard to get out of bed on friday as it might be good if we did something like a pancake breakfast to encourage them to come i think that's a great idea let's try that next week it might also be because a lotta students have been getting sick now that it's getting cold outside and had a number students come by my office with symptoms like sniffling and coughing we should put up posters with tents for not getting sick since is almost flu season like you know wash our hands after the bathroom stuff like that i think that's a good idea and it'll be a good reminder for the teachers as well so another thing i want to talk about there's a student i've noticed here john smith he's missed seven days already and it's only november does anyone have an idea what's going on with him i might be able to fill the gaps there i talk to john today and he's really stressed out he's been dealing with helping his parents take care of his younger siblings during the day it might actually be a good idea if you spoke to the guidance counsellor a little bit like a doctor john today if you want to send him to miles after you meet with him a lot to deal with for middle schooler great thanks and and i can help out with the families child care needs a look for some free or low cost resources in the community to share with john and you can share them with his family grail some really good ideas here today thanks for coming and if no one has anything else i think we can wrap up",
+  "analysis": {
+    "summary": "The meeting discussed the issue of chronically absent students, particularly on Fridays, and potential solutions such as a pancake breakfast to encourage attendance. The group also talked about a student, John Smith, who has missed seven days of school and is dealing with stress and family responsibilities. The meeting concluded with ideas for supporting John and his family, including finding free or low-cost childcare resources. The meeting ended with a plan to follow up on these ideas.",
+    "key_decisions": [
+      "Host a pancake breakfast to encourage attendance",
+      "Meet with the guidance counsellor to discuss John Smith's situation"
+    ],
+    "open_questions": [
+      "What are the underlying reasons for the high absenteeism on Fridays?",
+      "How can the school effectively support students with family responsibilities?"
+    ],
+    "action_items": [
+      {
+        "task": "Organize a pancake breakfast for next week",
+        "owner": "Meeting organizer",
+        "deadline": "Next week",
+        "priority": "Medium"
+      },
+      {
+        "task": "Meet with the guidance counsellor to discuss John Smith's situation",
+        "owner": "Meeting organizer",
+        "deadline": "As soon as possible",
+        "priority": "High"
+      },
+      {
+        "task": "Find free or low-cost childcare resources in the community",
+        "owner": "Meeting organizer",
+        "deadline": "Null",
+        "priority": "Medium"
+      }
+    ]
+  }
+}
