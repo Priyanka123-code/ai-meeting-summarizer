@@ -19,7 +19,7 @@ from utils.transcription import (
     transcribe_audio,
     transcribe_with_whisper,
 )
-from utils.tts import speak_text
+from utils.tts import is_tts_available, speak_text
 # from unsloth import FastLanguageModel
 
 load_dotenv()
@@ -648,8 +648,11 @@ with tab_capture:
 
         col_read, col_export = st.columns(2)
         with col_read:
-            if st.button("Listen to Summary", use_container_width=True):
+            tts_available = is_tts_available()
+            if st.button("Listen to Summary", use_container_width=True, disabled=not tts_available):
                 speak_text(analysis.summary)
+            if not tts_available:
+                st.caption("Voice playback is disabled in the lightweight deployment.")
         with col_export:
             if st.button("Export to Word", use_container_width=True):
                 path = generate_word_minutes(st.session_state.transcript_data, analysis)
@@ -764,5 +767,8 @@ with tab_ask:
         st.markdown('<div class="glass-panel"><div class="section-title">Answer</div></div>', unsafe_allow_html=True)
         st.info(st.session_state.rag_answer)
 
-        if st.button("Hear Answer", use_container_width=True):
+        tts_available = is_tts_available()
+        if st.button("Hear Answer", use_container_width=True, disabled=not tts_available):
             speak_text(st.session_state.rag_answer)
+        if not tts_available:
+            st.caption("Voice playback is disabled in the lightweight deployment.")

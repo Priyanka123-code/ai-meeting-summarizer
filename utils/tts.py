@@ -1,5 +1,11 @@
 import streamlit as st
 import os
+from importlib.util import find_spec
+
+
+def is_tts_available() -> bool:
+    """Returns True when the optional Kokoro voice dependencies are installed."""
+    return find_spec("kokoro") is not None and find_spec("soundfile") is not None
 
 def speak_text(text: str, voice: str = "af_heart"):
     """
@@ -8,6 +14,10 @@ def speak_text(text: str, voice: str = "af_heart"):
     """
     if not text or len(text.strip()) < 3:
         st.warning("Nothing to speak")
+        return
+
+    if not is_tts_available():
+        st.info("Voice playback is optional and is not installed in the lightweight deployment.")
         return
 
     try:
@@ -36,5 +46,4 @@ def speak_text(text: str, voice: str = "af_heart"):
         st.success("🔊 Kokoro-82M Speaking...")
 
     except Exception as e:
-        st.error(f"Kokoro TTS Error: {str(e)}")
-        st.info("Voice playback is optional and is not installed in the lightweight deployment.")
+        st.error(f"Voice playback error: {str(e)}")
