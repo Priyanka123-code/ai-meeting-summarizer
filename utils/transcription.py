@@ -4,6 +4,7 @@ from pydub import AudioSegment
 import os
 import json
 import wave
+import shutil
 from datetime import datetime
 import torch
 import torchaudio
@@ -22,12 +23,37 @@ def load_whisper_model(model_size="medium"):
     return whisper.load_model(model_size)
 
 # ====================== PHASE 1: VIDEO & AUDIO PROCESSING ======================
+def _configure_ffmpeg() -> bool:
+    """Point pydub at ffmpeg/ffprobe when they are available on PATH."""
+    ffmpeg_path = shutil.which("ffmpeg")
+    ffprobe_path = shutil.which("ffprobe")
+
+    if ffmpeg_path:
+        AudioSegment.converter = ffmpeg_path
+    if ffprobe_path:
+        AudioSegment.ffprobe = ffprobe_path
+
+    return bool(ffmpeg_path and ffprobe_path)
+
+
 def convert_to_wav(audio_path: str, for_vosk=False) -> str:
     """
     Converts any audio/video format to optimized WAV.
     Supports: mp4, mkv, m4a, mov, avi, flac, ogg
     """
-    audio = AudioSegment.from_file(audio_path)
+    if not _configure_ffmpeg():
+        raise RuntimeError(
+            "FFmpeg is not installed on this server. On Streamlit Cloud, add "
+            "a packages.txt file with ffmpeg and redeploy the app."
+        )
+
+    try:
+        audio = AudioSegment.from_file(audio_path)
+    except FileNotFoundError as exc:
+        raise RuntimeError(
+            "FFmpeg/ffprobe could not be found while reading this audio/video file. "
+            "Add ffmpeg to packages.txt and redeploy."
+        ) from exc
     
     # Vosk requires 16kHz Mono
     if for_vosk:
@@ -79,22 +105,25 @@ def transcribe_audio(uploaded_file, use_vosk=False) -> str:
 
     os.makedirs("data/audio", exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    audio_path = f"data/audio/{timestamp}_{uploaded_file.name}"
+    audio_path = f"data/audio/{timestamp}_{os.path.basename(uploaded_file.name)}"
+    wav_path = None
     
     with open(audio_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
 
-    wav_path = convert_to_wav(audio_path, for_vosk=use_vosk)
-
     try:
+        wav_path = convert_to_wav(audio_path, for_vosk=use_vosk)
+
         if use_vosk:
             transcript = transcribe_with_vosk(wav_path)
         else:
             result = transcribe_with_whisper(wav_path, model_size="medium")
             transcript = result["text"].strip()
+    except RuntimeError as exc:
+        transcript = f"Error: {exc}"
     finally:
         if os.path.exists(audio_path): os.remove(audio_path)
-        if os.path.exists(wav_path): os.remove(wav_path)
+        if wav_path and os.path.exists(wav_path): os.remove(wav_path)
 
     return transcript
 
