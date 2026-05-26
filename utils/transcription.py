@@ -6,6 +6,7 @@ import json
 import wave
 import shutil
 from datetime import datetime
+from importlib.util import find_spec
 import torch
 
 # ====================== PHASE 3: TIMESTAMP HELPER ======================
@@ -90,6 +91,11 @@ def transcribe_with_vosk(audio_path: str) -> str:
     results.append(res.get("text", ""))
     return " ".join(results).strip()
 
+
+def is_vosk_available() -> bool:
+    """Returns True when the optional Vosk dependency is installed."""
+    return find_spec("vosk") is not None
+
 # ====================== WHISPER CORE LOGIC ======================
 def transcribe_with_whisper(audio_path: str, model_size="medium") -> dict:
     """Returns both full text and segments for diarization"""
@@ -113,7 +119,7 @@ def transcribe_audio(uploaded_file, use_vosk=False) -> str:
     try:
         wav_path = convert_to_wav(audio_path, for_vosk=use_vosk)
 
-        if use_vosk:
+        if use_vosk and is_vosk_available():
             transcript = transcribe_with_vosk(wav_path)
         else:
             result = transcribe_with_whisper(wav_path, model_size="medium")

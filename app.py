@@ -14,6 +14,7 @@ from utils.llm_analysis import MeetingAnalysis, analyze_meeting
 from utils.rag import add_to_rag, rag_search
 from utils.transcription import (
     get_diarized_transcript,
+    is_vosk_available,
     load_whisper_model,
     transcribe_audio,
     transcribe_with_whisper,
@@ -567,7 +568,14 @@ with tab_capture:
 
     with settings_col:
         enable_diarization = st.checkbox("Identify speakers", value=False)
-        use_vosk = st.checkbox("Fast Vosk offline mode", value=False)
+        vosk_available = is_vosk_available()
+        use_vosk = st.checkbox(
+            "Fast Vosk offline mode",
+            value=False,
+            disabled=not vosk_available,
+        )
+        if not vosk_available:
+            st.caption("Fast Vosk mode is disabled in the lightweight deployment.")
 
     if uploaded_file and st.button("Start Processing", type="primary", use_container_width=True):
         with st.spinner("Transcribing meeting..."):
