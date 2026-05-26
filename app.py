@@ -19,6 +19,9 @@ from utils.transcription import (
     transcribe_with_whisper,
 )
 from utils.tts import speak_text
+# from unsloth import FastLanguageModel
+import whisper
+from pyannote.audio import Pipeline
 
 load_dotenv()
 
@@ -27,20 +30,20 @@ TRANSCRIPT_DIR = "data/transcripts"
 AUDIO_DIR = "data/audio"
 
 
-@st.cache_resource
-def load_finetuned_model():
-    if not HAS_GPU:
-        return None, None
+# @st.cache_resource
+# def load_finetuned_model():
+#     if not HAS_GPU:
+#         return None, None
 
-    from unsloth import FastLanguageModel
+#     from unsloth import FastLanguageModel
 
-    model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name="priyankas123/priyanka-meeting-llama3-8b",
-        max_seq_length=2048,
-        load_in_4bit=True,
-    )
-    FastLanguageModel.for_inference(model)
-    return model, tokenizer
+#     model, tokenizer = FastLanguageModel.from_pretrained(
+#         model_name="priyankas123/priyanka-meeting-llama3-8b",
+#         max_seq_length=2048,
+#         load_in_4bit=True,
+#     )
+#     FastLanguageModel.for_inference(model)
+#     return model, tokenizer
 
 
 def save_uploaded_file(uploaded_file, prefix="meeting"):
@@ -532,13 +535,16 @@ with settings_token_col:
     hf_token = st.text_input("Hugging Face token", type="password")
 
 ft_model, ft_tokenizer = None, None
-if model_choice.startswith("My Fine-Tuned"):
-    with st.spinner("Loading local model..."):
-        ft_model, ft_tokenizer = load_finetuned_model()
-    st.markdown('<div class="mode-status">Local model ready</div>', unsafe_allow_html=True)
-else:
-    st.markdown('<div class="mode-status">Groq mode active</div>', unsafe_allow_html=True)
-
+# if model_choice.startswith("My Fine-Tuned"):
+#     with st.spinner("Loading local model..."):
+#         ft_model, ft_tokenizer = load_finetuned_model()
+#     st.markdown('<div class="mode-status">Local model ready</div>', unsafe_allow_html=True)
+# else:
+#     st.markdown('<div class="mode-status">Groq mode active</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="mode-status">Groq mode active</div>',
+    unsafe_allow_html=True
+)
 
 tab_capture, tab_library, tab_ask = st.tabs(["Capture", "Library", "Meeting Search"])
 

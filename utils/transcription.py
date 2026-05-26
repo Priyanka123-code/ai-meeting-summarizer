@@ -18,7 +18,7 @@ def format_timestamp(seconds: float) -> str:
 
 # ====================== CACHED MODEL LOADING ======================
 @st.cache_resource
-def load_whisper_model(model_size="medium"):
+def load_whisper_model(model_size="base"):
     """Loads the model once and keeps it in memory"""
     return whisper.load_model(model_size)
 
