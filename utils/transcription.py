@@ -7,7 +7,6 @@ import wave
 import shutil
 from datetime import datetime
 import torch
-import torchaudio
 
 # ====================== PHASE 3: TIMESTAMP HELPER ======================
 def format_timestamp(seconds: float) -> str:
@@ -152,6 +151,15 @@ def load_diarization_pipeline(hf_token):
 def get_diarized_transcript(audio_path, whisper_segments, hf_token):
     """Merges Whisper text with Speaker IDs and [MM:SS] Timestamps"""
     pipeline = load_diarization_pipeline(hf_token)
+
+    try:
+        import torchaudio
+    except ImportError as exc:
+        raise RuntimeError(
+            "Speaker identification needs torchaudio, which is not installed in "
+            "the lightweight deployment. Turn off 'Identify speakers' and process "
+            "the meeting again."
+        ) from exc
     
     waveform, sample_rate = torchaudio.load(audio_path)
     diarization = pipeline({"waveform": waveform, "sample_rate": sample_rate})
