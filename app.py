@@ -576,7 +576,10 @@ with tab_capture:
                 try:
                     model_whisper = load_whisper_model("medium")
                     result = model_whisper.transcribe(temp_path)
-                    transcript = get_diarized_transcript(temp_path, result["segments"], hf_token)
+                    try:
+                        transcript = get_diarized_transcript(temp_path, result["segments"], hf_token)
+                    except RuntimeError as exc:
+                        transcript = f"Error: {exc}"
                 finally:
                     if os.path.exists(temp_path):
                         os.remove(temp_path)

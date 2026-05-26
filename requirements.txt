@@ -2,7 +2,6 @@ streamlit
 openai-whisper
 torch
 torchaudio
-pyannote.audio==3.3.2
 langchain-groq
 langchain-chroma
 langchain-huggingface

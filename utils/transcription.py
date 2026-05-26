@@ -131,7 +131,15 @@ def transcribe_audio(uploaded_file, use_vosk=False) -> str:
 @st.cache_resource
 def load_diarization_pipeline(hf_token):
     """Loads the speaker diarization model from Hugging Face"""
-    from pyannote.audio import Pipeline
+    try:
+        from pyannote.audio import Pipeline
+    except ImportError as exc:
+        raise RuntimeError(
+            "Speaker identification is disabled on this deployment because "
+            "pyannote.audio is not installed. Turn off 'Identify speakers' and "
+            "process the meeting again."
+        ) from exc
+
     pipeline = Pipeline.from_pretrained(
         "pyannote/speaker-diarization-3.1",
         use_auth_token=hf_token
